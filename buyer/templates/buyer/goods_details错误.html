@@ -1,0 +1,124 @@
+{% extends "buyer/base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <div class="goods_type">
+        <div class="goods_details"><a href="#">首页</a> >{{ goods_obj.goods_name }}</div>
+        <div class="goods_box">
+            {# 商品图片#}
+            <div class="box_pic">
+                <img style="height: 400px" src="{% static goods_obj.goodsimage_set.first.image_address%}"/>
+
+                {% for foo in goods_obj.goodsimage_set.all %}
+                    <a href=""> <img style="height: 100px; width:100px" src="{% static foo.image_address %} " alt="图片"></a>
+                {% endfor %}
+            </div>
+
+            <div class="box_details">
+
+                <form method="post" action="/buyer/car_jump/?id={{ goods_obj.id }}">
+                    {% csrf_token %}
+                    <h1>{{ goods_obj.goods_name }}</h1>
+                    <span style='font-size: 15px;'>{{ goods_obj.goods_desc|safe }}</span>
+                    <div class="box_bg">
+                        价格：￥<span
+                            style="font-size: 40px; font-weight: bold; font-family:'微软雅黑';color:#FD482C ">{{ goods_obj.goods_cprice }}</span>
+                        元&nbsp;&nbsp;原价:￥<s style='color: red'> {{ goods_obj.goods_oprice }}</s></div>
+                    <div class="address">配送：顺丰快递</div>
+                    <div class="address">存储方法：适宜的环境</div>
+
+                    <div class="num">数量：
+                        <input type="button" name="-" value="-" class="btn1" onclick="dec()"/>
+                        <input type="text" value="1" id="count" name="count" class="text1"/>
+                        <input type="button" name="+" value="+" class="btn1" onclick="add()"/>
+                    </div>
+                    {#携带商品名称 到购物车中间页面#}
+                    <input type="hidden" name="goods_name" value="{{ goods_obj.goods_name }}">
+                    {#携带商品价格 到购物车中间页面#}
+                    <input type="hidden" name="goods_xprice" value="{{ goods_obj.goods_xprice }}">
+                    {#添加购物车携带图片#}
+                    <input type="hidden" name="goods_img_path"
+                           value="{{ goods_obj.goodsimage_set.first.img_address.name }}">
+                    <div class="btn2"><input type="submit" value="加入购物车" class="gouwu"/></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var count;
+
+        function add() {
+            count = document.getElementById('count').value;
+
+            if (document.getElementById('count').value == {{ goods_obj.goods_kucun }}) {
+                document.getElementById('count').value =
+                {{ goods_obj.goods_kucun }}
+            } else {
+                count++;
+                document.getElementById('count').value = count;
+            }
+        }
+
+        function dec() {
+            count = document.getElementById('count').value;
+            count--;
+            if (document.getElementById('count').value == 1) {
+                document.getElementById('count').value = 1
+            } else {
+                document.getElementById('count').value = count;
+            }
+        }
+    </script>
+    <div class="goods_type1">
+        <div class="type1_left">
+            <div class="type1_top">其他商品</div>
+            <div class="type1_bottom">
+                {% comment %}{% for g in data %}
+                       <a href="/buyer/goods_details/{{ g.id }}/">
+                       <dl>
+                        <dt><img src="{{ g.img }}"/> </dt>
+                            <dd>
+                                <span class="pname">
+                                    {{ g.name }}
+                                </span>
+                                <p class="price">{{ g.price }}</p>
+                            </dd>
+                        </dl>
+                       </a>
+                    {% endfor %}{% endcomment %}
+
+                {% for goods_obj in new_goods_obj_list %}
+                    <a href="/buyer/goods_details/?id={{ goods_obj.id }}">
+                        <dl>
+                            <dt><img src="{% static goods_obj.goodsimage_set.first.img_address.name %}"/></dt>
+                            <dd>
+                                <span class="pname">
+                                    {{ goods_obj.goods_name }}
+                                </span>
+                                <p class="price">￥{{ goods_obj.goods_xprice }}</p>
+                            </dd>
+                        </dl>
+                    </a>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div class="type1_right">
+            <div class="type1_top">商品详情</div>
+            <div class="type1_bottom">{{ goods_obj.goods_details|safe }}</div>
+        </div>
+        <br/>
+        <div class="type1_right">
+            <div class="type1_top">商品评价</div>
+            <div class="type1_bottom">
+
+                <div class="comment_box1">
+                    <span>会员:sam</span>&nbsp;&nbsp;&nbsp;
+                    <span>评论内容:真的好吃</span>
+                    <span style="float:right">评论时间:2018-9-9</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

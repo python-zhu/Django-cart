@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>全球生鲜卖家管理后台</title>
+    <link rel="stylesheet" href="{% static 'seller/css/font.css' %}">
+    <link rel="stylesheet" href="{% static 'seller/css/xadmin.css' %}">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'seller/lib/layui/layui.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'seller/js/xadmin.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jq/jquery-3.3.1.js' %}"></script>
+
+</head>
+
+
+<body>
+<div class="x-body layui-anim layui-anim-up">
+    {#    1.添加 enctype  action 和 csrf_token #}
+    <form class="layui-form" method="post" action="/seller/type_add/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="layui-form-item">
+            <label for="L_email" class="layui-form-label">
+                <span class="x-red">*</span>类型名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_email" name="type_name" required=""
+                       autocomplete="off" class="layui-input" value="{{ type_name }}">
+                <span style="color: red" id="error">{{ msg }}</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+
+            <input type="button" class="layui-btn" lay-filter="add" lay-submit="" value="增加" id="btn"/>
+
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $('#btn').click(function () {
+            var content = $('#L_email').val();
+            $.ajax({
+                url: '/seller/type_add_ajax/',
+                type: 'POST',
+                data: {'name': content, 'csrfmiddlewaretoken': "{{ csrf_token }}"},
+                success: function (res) {
+                    if (res.status == 'true') {
+                        alert('此商品类型已经存在了');
+                        $('#error').text('此商品类型已经存在了')
+                    }
+                    else {
+                        $('#error').text('');
+                        var bool = confirm('保存成功，是否继续添加类型');
+                        if (bool) {
+                            $('#L_email').val('')
+                        } else {
+                            $.ajax({
+                                url: '/seller/type_list/',
+                                type: 'GET',
+                                success: function (res) {
+                                    window.location.href = 'http://127.0.0.1:8000/seller/type_list/';
+                                }
+                            })
+                        }
+                    }
+                },
+            });
+        });
+
+    })
+
+</script>
+
+
+</body>
+
+</html>

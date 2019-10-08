@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>全球生鲜卖家管理后台</title>
+    <link rel="stylesheet" href="{% static 'seller/css/font.css' %}">
+    <link rel="stylesheet" href="{% static 'seller/css/xadmin.css' %}">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'seller/lib/layui/layui.js' %}" charset="utf-8"></script>
+    <script type="text/javascript" src="{% static 'seller/js/xadmin.js' %}"></script>
+</head>
+
+<body class="layui-anim layui-anim-up">
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">商品类型管理</a>
+        <a href="/seller/type_add/">商品类型添加</a>
+      </span>
+</div>
+<div class="x-body">
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>商品类型序号</th>
+            <th>商品类型名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for goods_type_obj in page_obj %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ goods_type_obj.name }}</td>
+                <td>
+                    <a href="/seller/type_change/?id={{ goods_type_obj.id }}">编辑</a>
+                    <a href="#"
+                       onclick="if (confirm('是否删除？')){window.location.href='/seller/type_delete/?id={{ goods_type_obj.id }}&page={{ current_num }}'} ">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<div align="center">页次：{{ current_num }}/{{ num_pages }} 每页{{ my_num }}条 总数{{ count }}条
+    <a href="/seller/type_list/?page=1">首页</a>
+    {% if page_obj.has_previous %}
+        <a href="/seller/type_list/?page={{ page_obj.previous_page_number }}">上一页</a>
+    {% else %}
+        <a href="#">上一页</a>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+        <a href="/seller/type_list/?page={{ page_obj.next_page_number }}">下一页</a>
+    {% else %}
+        <a href="#">下一页</a>
+    {% endif %}
+    <a href="/seller/type_list/?page={{ num_pages }}">尾页</a>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+{% extends "buyer/base.html" %}
+
+{% load static %}
+
+{% block content %}
+      <div class="store">
+        <p>修改地址</p>
+        <div class="store_box">
+        <form method="post" action="/buyer/address_update/">
+            {% csrf_token %}
+            <input type="hidden" value="{{ address_obj.id }}" name="id">
+
+            <div class="line">
+                <label>收货人姓名</label>
+                 <input type="text" name="buyer_name" class="input" value="{{ address_obj.receiver }}"/>
+            </div>
+            <div class="line">
+                <label>收货人电话</label>
+                 <input type="text" name="buyer_phone" class="input" value="{{ address_obj.phone }}"/>
+            </div>
+            <div class="line">
+                <label>收货人地址</label>
+                 <input type="text" name="buyer_address" class="input" value="{{ address_obj.address }}"/>
+            </div>
+
+            <div class="line">
+                <input type="submit" value="修改地址" class="btn"/>
+            </div>
+        </form>
+        </div>
+   </div>
+{% endblock %}

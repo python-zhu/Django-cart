@@ -1,0 +1,54 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全球生鲜卖家管理后台页面</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="{% static 'seller/css/font.css' %}">
+    <link rel="stylesheet" href="{% static 'seller/css/xadmin.css' %}">
+    <script type="text/javascript" src="{% static 'jq/jquery-3.3.1.js' %}"></script>
+
+</head>
+<body class="login-bg">
+<div class="login layui-anim layui-anim-up">
+    <div class="message">全球生鲜卖家管理后台页面</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <hr class="hr15">
+        {{ registerform.username}} <span style="color: red" id="error">{{ msg }}</span>
+        <hr class="hr15">
+        {{ registerform.nickname}}
+{#        <input name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">#}
+        <hr class="hr15">
+        {{ registerform.password}}
+        <hr class="hr15">
+        {{ registerform.picture}}
+        <input value="注册" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <hr class="hr20">
+    </form>
+    <p style="text-align: center; color: red;">{{ result.error }}</p>
+</div>
+<script>
+    $(function () {
+        $('#id_username').blur(function () {
+            var content=$('#id_username').val();
+            $.ajax({
+                url:'/seller/register_ajax/',
+                type:'GET',
+                data:{'name':content},
+                success:function (res) {
+                    if (res.status=='true'){
+                        $('#error').text('此用户名已被注册')
+                    } else{
+                        $('#error').text('')
+                    }
+                }
+            })
+        })
+    })
+</script>
+</body>
+</html>

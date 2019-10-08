@@ -1,0 +1,34 @@
+{% extends "buyer/base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <div class="store">
+        <p>新增地址</p>
+
+        <div class="store_box">
+            <form method="post" action="/buyer/address_add/">
+                {% csrf_token %}
+                <div class="line">
+                    <label>收货人姓名</label>
+                    <input type="text" name="buyer_name" class="input"/>
+                </div>
+                <div class="line">
+                    <label>收货人电话</label>
+                    <input type="text" name="buyer_phone" class="input"/>
+                </div>
+                <div class="line">
+                    <label>收货人地址</label>
+                    <input type="text" name="buyer_address" class="input"/>
+                </div>
+
+                <div class="line">
+                    <input type="submit" value="新增地址" class="btn"/>
+
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+{% endblock %}

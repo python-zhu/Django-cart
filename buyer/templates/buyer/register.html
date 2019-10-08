@@ -1,0 +1,71 @@
+{% extends "buyer/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="users_box">
+        <div class="users_box_top">会员注册</div>
+        <div class="users_box_bottom">
+            <div class="box_bottom_left"><img src="{% static 'buyer/images/huiyuan.jpg' %}"/></div>
+            <div class="box_bottom_right">
+
+                <form method="post" action="/buyer/register/">
+                    {% csrf_token %}
+                    <div>
+                        用户名:<input type="text" name="username" placeholder="请输入用户名" required="" id="zhuce"
+                                   class="input" value="{{ username }}"/>
+                        <span style="color: red;font-size: large" id="username_error">{{ error_msg }}</span>
+                    </div>
+
+                    <div>
+                        昵称:<input type="text" name="nickname" placeholder="请输入昵称" required="" id="zhuce1"
+                                  class="input" value="{{ nickname }}"/><span></span>
+                    </div>
+
+                    <div>
+                        密码：<input type="password" name="userpass" placeholder="请输入密码" required="" class="input"/>
+                    </div>
+                    <div>
+                        <input type="submit" id="submit" value="注册会员" class="gouwu"/>
+                    </div>
+                </form>
+                <p style="float: right;">
+                    <span>
+                        <a href="/buyer/register_email/">
+                            邮箱注册
+                        </a>
+                    </span>
+                    <span>
+                        <a href="/register_phone/">
+                            手机注册
+                        </a>
+                    </span>
+
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 使用ajax 判断 用户名是否已被注册
+        $(function () {
+            $("#zhuce").blur(function () {
+                var username = $("#zhuce").val();
+                //alert(username);
+                $.ajax({
+                    url: '/buyer/register_ajax/',
+                    type: 'get',
+                    data: {'username': username},
+                    success: function (res) {
+                        //alert('succ');
+                        if (res.status == 'true') {
+                            $("#username_error").text('此用户已被注册过');
+                        } else {
+                            $("#username_error").text('');
+                        }
+                    },
+                })
+            });
+        })
+    </script>
+{% endblock %}

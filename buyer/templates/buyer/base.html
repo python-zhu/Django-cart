@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}全球生鲜购物商场{% endblock %}</title>
+    <link type="text/css" href="{% static 'buyer/css/index.css' %}" rel="stylesheet"/>
+    <script src="{% static 'jq/jquery-3.3.1.js' %}"></script>
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
+<!-- 头部开始 -->
+<div class="header">
+    <ul>
+
+        {% if request.COOKIES.buyer_name %}
+            <li><a href="/buyer/logout/">[退出]</a></li>
+            <li><a href="/seller/register/">[免费开店]</a></li>
+            <li><a href="/buyer/car_list/">[购物车]</a></li>
+            <li>欢迎：<a href="">{{ request.COOKIES.buyer_name }}</a></li>
+        {% else %}
+            <li><a href="/seller/register/">[免费开店]</a></li>
+            <li><a href="/buyer/car_list/">[购物车]</a></li>
+            <li><a href="/buyer/register/">[注册有惊喜]</a></li>
+            <li><a href="/buyer/login/">[登录]</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+
+<div class="header_logo">
+    <div class="logo"></div>
+    <div class="nav">
+        <ul>
+            <li><a href="/buyer/index/">首页<br/>Home</a></li>
+            <li><a href="">商品<br/>Fruit</a></li>
+            {% if request.COOKIES.buyer_name %}
+                <li><a href="/buyer/address_list/">个人中心<br/>VIP Club</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+<!-- 头部结束 -->
+{% block content %}
+{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+{% extends "buyer/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="users_box">
+        <div class="users_box_top">会员邮箱注册</div>
+        <div class="users_box_bottom">
+            <div class="box_bottom_left"><img src="{% static 'buyer/images/huiyuan.jpg' %}"/></div>
+            <div class="box_bottom_right" style="float:left;margin-left:20px">
+
+                <form method="post" action="/buyer/register_email/">
+                    {% csrf_token %}
+                    <div>
+                        邮&nbsp;箱：<input type="text" name="emailname" placeholder="请输入邮箱" required="" id="email"
+                                        class="input"/>
+                        <span>{{ error_msg.email }}</span>
+                    </div>
+
+                    <div>
+                        验证码：<input type="text" name="code" placeholder="请输入验证码" required="" style='width: 150px'
+                                   class="input" id="code"/>
+
+                        <input class="huoqu" id="zphone" type="button" value=" 获取验证码 ">
+                        <span>{{ error_msg.yzm_sx }}{{ error_msg.yzm_error }}</span>
+                    </div>
+
+                    <div>
+                        密&nbsp;码：<input type="password" name="userpass" placeholder="" required="" class="input"/>
+                    </div>
+
+                    <div>
+                        <input type="submit" id="submit" style="align:center" value="注册会员" class="gouwu"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(
+            function () {
+                // 1.获取验证码按钮监听
+                $("#zphone").click(
+                    function () {
+                        // 2.获取输入的邮箱名称
+                        var email = $("#email").val();
+                        $.ajax(
+                            {
+                                url: "/buyer/send_message/?email=" + email,
+                                type: "GET",
+                                data: "",
+                                success: function (data) {
+                                    {#// alert(data);#}
+                                    console.log(data);
+                                    if (data.status == 'error') {
+                                        alert('错误了')
+                                    } else {
+                                        alert('发送成功，请查看邮箱')
+                                    }
+                                }
+                            }
+                        )
+                    }
+                )
+            }
+        )
+    </script>
+{% endblock %}

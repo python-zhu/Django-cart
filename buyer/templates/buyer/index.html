@@ -1,0 +1,38 @@
+{% extends "buyer/base.html" %}
+{% load static %}
+{% block content %}
+    <div id="lunbo"></div>
+    <div class="shop_list">
+        <div class="list1_box">
+            {% for goods_obj in queryset_obj %}
+                <div class="list_box">
+                    <dl>
+                        <a href="/buyer/goods_detail/?id={{ goods_obj.id }}">
+                            <dt><img src="{% static goods_obj.goodsimage_set.first.image_address %}"/></dt>
+                            <dd align="center">
+                                <p>{{ goods_obj.goods_name }}</p>
+                                <p>￥{{ goods_obj.goods_cprice }}元</p>
+                            </dd>
+                        </a>
+                    </dl>
+                </div>
+            {% endfor %}
+
+            {# 第二种方式#}
+            {#            {% for goods_image_obj_dic in goods_image_obj_list %}#}
+            {#                <div class="list_box">#}
+            {#                    <dl>#}
+            {#                        <a href="/buyer/goods_details/?id={{ goods_image_obj_dic.goods_obj.id }}">#}
+            {#                            <dt><img src="{% static goods_image_obj_dic.image_path %}"/></dt>#}
+            {#                            <dd align="center">#}
+            {#                                <p>{{ goods_image_obj_dic.goods_obj.goods_name }}</p>#}
+            {#                                <p>￥{{ goods_image_obj_dic.goods_obj.goods_xprice }}元</p>#}
+            {#                            </dd>#}
+            {#                        </a>#}
+            {#                    </dl>#}
+            {#                </div>#}
+            {#            {% endfor %}#}
+        </div>
+    </div>
+
+{% endblock %}
